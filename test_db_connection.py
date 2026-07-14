@@ -1,10 +1,14 @@
-from app.db.session import SessionLocal
+from app.core.config import settings
+from app.db.session import SessionLocal, engine
+from app.db.base import Base
 from app.models.user import User
+
+# Create tables if they don't exist
+Base.metadata.create_all(bind=engine)
 
 def test_db_connection():
     db = SessionLocal()
     try:
-        # Create a test user
         test_user = User(name="Test", email="test@example.com")
         db.add(test_user)
         db.commit()
